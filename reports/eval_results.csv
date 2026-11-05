@@ -1,0 +1,22 @@
+question,correct,seconds,generated_sql
+How many tracks are there?,True,3.4,SELECT COUNT(*) FROM Track
+How many customers are there?,True,2.1,SELECT COUNT(*) FROM [Customer]
+Which genre has the most tracks?,True,5.8,SELECT T2.Name FROM Track AS T1 INNER JOIN Genre AS T2 ON T1.GenreId = T2.GenreId GROUP BY T1.GenreId ORDER BY COUNT(*) DESC LIMIT 1
+Which 5 artists have the most albums?,True,9.0,"SELECT T1.Name, COUNT(T2.AlbumId) AS AlbumCount
+FROM Artist AS T1
+JOIN Album AS T2 ON T1.ArtistId = T2.ArtistId
+GROUP BY T1.ArtistId, T1.Name
+ORDER BY AlbumCount DESC
+LIMIT 5"
+What is the total sales amount of all invoices?,True,1.4,SELECT SUM(Total) FROM Invoice
+Which country has the highest total sales?,True,4.8,"SELECT BillingCountry
+FROM Invoice
+GROUP BY BillingCountry
+ORDER BY SUM(Total) DESC
+LIMIT 1"
+How many invoices were issued in 2010?,True,3.2,"SELECT COUNT(*) 
+FROM Invoice 
+WHERE strftime('%Y', InvoiceDate) = '2010'"
+What is the longest track by duration? Give its name.,True,3.1,SELECT [Name] FROM [Track] ORDER BY [Milliseconds] DESC LIMIT 1
+How many employees are there?,True,2.6,SELECT COUNT(*) FROM [Employee]
+How many albums does the artist Led Zeppelin have?,True,6.3,SELECT COUNT(*) FROM Album JOIN Artist ON Album.ArtistId = Artist.ArtistId WHERE Artist.Name = 'Led Zeppelin'
