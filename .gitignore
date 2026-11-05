@@ -21,3 +21,5 @@ data/raw/
 .vscode/
 .idea/
 .DS_Store
+*.db
+*.db

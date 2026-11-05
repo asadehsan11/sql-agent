@@ -1,0 +1,68 @@
+:root {
+    --bg: #0B0D10; --panel: #12161B; --line: #1E252D;
+    --text: #F2F5F7; --muted: #8A94A3; --soft: #B7C0CC;
+    --cyan: #22D3EE; --blue: #1F8FE0; --pink: #F4A3C4; --green: #5EF2A8;
+}
+#MainMenu, footer, header {visibility: hidden;}
+.block-container {padding-top: 1rem; max-width: 1200px;}
+
+.navbar {
+    display: flex; align-items: center; justify-content: space-between;
+    background: var(--panel); border: 1px solid var(--line); border-radius: 14px;
+    padding: .8rem 1.4rem; margin-bottom: 1.2rem;
+}
+.brand {font-weight: 800; font-size: 1.1rem; color: var(--text); letter-spacing: .02em;}
+.navbar a {
+    color: var(--cyan); text-decoration: none; font-weight: 700;
+    background: rgba(34,211,238,.12); padding: .35rem .9rem; border-radius: 999px;
+}
+
+.hero {
+    background: linear-gradient(135deg, #0F2A33 0%, var(--panel) 60%);
+    border: 1px solid var(--line); border-radius: 18px;
+    padding: 2.4rem 2.2rem; margin-bottom: 1.2rem;
+}
+.hero h1 {font-size: 2.5rem; font-weight: 800; margin: 0 0 .5rem 0; color: var(--text);}
+.hero h1 .accent {
+    background: linear-gradient(90deg, var(--cyan), var(--pink));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.hero p {font-size: 1.05rem; max-width: 680px; margin: 0 0 1.2rem 0; color: var(--soft);}
+.pill {
+    display: inline-block; padding: .3rem .9rem; border-radius: 999px;
+    font-size: .85rem; font-weight: 700; margin-right: .5rem; border: 1px solid;
+}
+.p-cyan {color: var(--cyan); border-color: rgba(34,211,238,.5); background: rgba(34,211,238,.08);}
+.p-pink {color: var(--pink); border-color: rgba(244,163,196,.5); background: rgba(244,163,196,.08);}
+.p-green {color: var(--green); border-color: rgba(94,242,168,.5); background: rgba(94,242,168,.08);}
+
+.tiles {display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin-bottom: 1.6rem;}
+.tile {background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 1rem 1.2rem;}
+.tile-label {color: var(--muted); font-size: .78rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;}
+.tile-num {font-size: 2rem; font-weight: 800; margin-top: .2rem;}
+.n-blue {color: var(--blue);} .n-pink {color: var(--pink);}
+.n-green {color: var(--green);} .n-cyan {color: var(--cyan);}
+
+.card-title {
+    font-weight: 700; font-size: .85rem; margin-bottom: .6rem; color: var(--muted);
+    letter-spacing: .08em; text-transform: uppercase;
+}
+div[data-testid="stVerticalBlockBorderWrapper"] {
+    border: 1px solid var(--line) !important; border-radius: 14px; background: var(--panel);
+}
+div[data-testid="stForm"] {border: 0; padding: 0;}
+.chip {
+    display: inline-block; background: rgba(34,211,238,.1); border: 1px solid rgba(34,211,238,.35);
+    color: var(--cyan); padding: .25rem .7rem; border-radius: 999px;
+    font-size: .85rem; font-weight: 600; margin: 0 .35rem .35rem 0;
+}
+.note {color: var(--soft); font-size: .92rem;}
+
+.stButton > button, .stFormSubmitButton > button {
+    background: linear-gradient(90deg, var(--cyan), var(--blue)); border: 0;
+    border-radius: 10px; padding: .6rem 1.2rem;
+}
+.stButton > button p, .stFormSubmitButton > button p {color: #06141A !important; font-weight: 700;}
+
+.footer {text-align: center; color: var(--muted); margin: 2.5rem 0 1rem 0; font-size: .9rem;}
+.footer a {color: var(--cyan); font-weight: 600; text-decoration: none;}
