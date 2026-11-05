@@ -1,0 +1,23 @@
+# Secrets
+.env
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Notebooks
+.ipynb_checkpoints/
+
+# Data and models (large files)
+data/raw/
+*.pt
+*.pth
+*.onnx
+*.safetensors
+
+# Editors and OS
+.vscode/
+.idea/
+.DS_Store
