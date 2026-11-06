@@ -4,6 +4,8 @@ Type a question in plain English. The agent writes the SQL, runs it **read-only*
 
 **Live demo:** https://chat-with-sql-asad.streamlit.app/
 
+**Demo video (2 min):** https://youtu.be/D2Pp_uYWgZI
+
 ![App screenshot](reports/demo.PNG)
 ![SQL and result](reports/sql.PNG)
 
@@ -23,6 +25,7 @@ Most business questions ("Which country brings the most sales?") are stuck waiti
 
 ## Safety design
 
+- Requests that ask to change data ("Delete all customers") are refused up front, before reaching the LLM.
 - Only a single `SELECT` or `WITH` statement is allowed.
 - Forbidden keywords (`DROP`, `DELETE`, `UPDATE`, `INSERT`, `ALTER`, `PRAGMA`, `ATTACH`, ...) are blocked. Keywords inside string literals are handled correctly.
 - The database is opened in read-only mode (`mode=ro`), so even a query that slipped past the validator cannot change data.
