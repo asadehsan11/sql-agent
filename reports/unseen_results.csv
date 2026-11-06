@@ -1,0 +1,31 @@
+question,kind,good_behavior,generated_sql,rows,answer,error,verdict
+Which employee manages the most people?,multi-step,Uses ReportsTo and names one employee with a count,"SELECT e1.FirstName || ' ' || e1.LastName AS ManagerName
+FROM Employee e1
+JOIN Employee e2 ON e1.EmployeeId = e2.ReportsTo
+GROUP BY e1.EmployeeId
+ORDER BY COUNT(e2.EmployeeId) DESC, ManagerName ASC
+LIMIT 1",1,Nancy Edwards manages the most people.,,
+How much did customers from Brazil spend in total?,simple,Sums invoice totals for Brazil,"SELECT SUM(Invoice.Total) 
+FROM Invoice 
+JOIN Customer ON Invoice.CustomerId = Customer.CustomerId 
+WHERE Customer.Country = 'Brazil'",1,Customers from Brazil spent a total of 190.1.,,
+Which customers have never bought anything?,empty result,"Says there are none (or lists them), without inventing","SELECT c.CustomerId, c.FirstName, c.LastName, c.Company, c.Address, c.City, c.State, c.Country, c.PostalCode, c.Phone, c.Fax, c.Email, c.SupportRepId
+FROM Customer c
+WHERE c.CustomerId NOT IN (SELECT CustomerId FROM Invoice)
+ORDER BY c.LastName, c.FirstName
+LIMIT 50",0,"The query ran, but no matching rows were found.",,
+What is the most expensive album?,ambiguous,Says how album price was measured (albums have no price column),,0,"This database can't answer that: Album prices are not stored in the schema; tracks have unit prices, but album price requires calculation or data not directly available.",,
+What is the profit margin of each genre?,unanswerable,Says there is no cost or profit data,,0,This database can't answer that: Profit margin data does not exist in the database.,,
+List the customers who are unhappy with us.,unanswerable,Says there is no satisfaction data,,0,This database can't answer that: customer satisfaction ratings do not exist in the schema,,
+Compare total sales in 2011 and 2012.,simple,Gives both totals,"SELECT 
+    strftime('%Y', InvoiceDate) AS Year, 
+    SUM(Total) AS TotalSales
+FROM Invoice
+WHERE strftime('%Y', InvoiceDate) IN ('2011', '2012')
+GROUP BY strftime('%Y', InvoiceDate)",2,"In 2011, total sales were 469.58, and in 2012, total sales were 477.53.",,
+Who composed the most tracks?,NULL trap,"Ignores tracks with no composer, does not report 'NULL' as the top","SELECT Composer 
+FROM Track 
+WHERE Composer IS NOT NULL 
+GROUP BY Composer 
+ORDER BY COUNT(*) DESC, Composer ASC 
+LIMIT 1",1,Steve Harris composed the most tracks.,,

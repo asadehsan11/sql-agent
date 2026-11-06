@@ -4,18 +4,19 @@ FROM Customer c
 JOIN Invoice i ON c.CustomerId = i.CustomerId
 GROUP BY c.CustomerId, c.FirstName, c.LastName
 ORDER BY TotalSpent DESC, c.LastName, c.FirstName
-LIMIT 50",50,"Our best customers were measured by the total amount spent on invoices. The top customers include Helena Holý, Richard Cunningham, and Luis Rojas.",,
-Which tracks are the most popular?,ambiguous,States how popularity is measured (e.g. units sold),"SELECT T.Name, SUM(IL.Quantity) AS TotalUnitsSold
-FROM Track T
-JOIN InvoiceLine IL ON T.TrackId = IL.TrackId
-GROUP BY T.TrackId, T.Name
-ORDER BY TotalUnitsSold DESC, T.Name ASC
-LIMIT 50",50,"Popularity was measured by the total number of units sold per track. There are many top tracks tied with 2 units sold each, including ""A Cor Do Sol"", ""A Melhor Forma"", and ""A Novidade (Live)"".",,
-Show total sales for last year.,ambiguous,"Notes that the data covers specific years, not today's 'last year'","SELECT SUM(Total) AS TotalSales
-FROM Invoice
-WHERE strftime('%Y', InvoiceDate) = '2013'",1,"Based on the historical database where invoice dates run through 2013, the relative date ""last year"" refers to the year 2013. The total sales for 2013 were 450.58.",,
-Show total sales for 2030.,no data,"Says there are no sales for 2030, not a confident 0",,0,"This database can't answer that: Invoice dates only run through 2013, so data for the year 2030 does not exist.",,
+LIMIT 50",50,"Best customers was measured as the total of the invoice totals. The top customers are Helena Holý, Richard Cunningham, and Luis Rojas.",,
+Which tracks are the most popular?,ambiguous,States how popularity is measured (e.g. units sold),"SELECT t.Name, SUM(il.Quantity) AS TotalSold
+FROM Track t
+JOIN InvoiceLine il ON t.TrackId = il.TrackId
+GROUP BY t.TrackId, t.Name
+ORDER BY TotalSold DESC, t.Name ASC
+LIMIT 1",1,"The most popular track is ""A Cor Do Sol"", with a total of 2 sold.",,
+Show total sales for last year.,ambiguous,"Notes that the data covers specific years, not today's 'last year'","SELECT SUM(Total) FROM Invoice WHERE strftime('%Y', InvoiceDate) = '2013'",1,"Total sales for last year, with last year referring to 2013 based on the database's historical dates, were $450.58. Total sales was measured as the total of the invoice totals.",,
+Show total sales for 2030.,no data,"Says there are no sales for 2030, not a confident 0",,0,"This database can't answer that: Data note specifies invoice dates run from 2009 to 2013, so 2030 is out of range.",,
 What is the weather in Berlin?,unanswerable,Says the database cannot answer this,,0,This database can't answer that: Weather data is not available in the database schema.,,
-How many employees quit last year?,unanswerable,Says there is no such data,,0,This database can't answer that: employee resignation data does not exist in the schema,,
-What is the average rating of our tracks?,unanswerable,Says there is no rating column,,0,This database can't answer that: Track ratings do not exist in the database schema.,,
-How many albums does Led Zep have?,fuzzy name,Finds Led Zeppelin (14 albums) or says the name was not found,SELECT COUNT(*) FROM Album JOIN Artist ON Album.ArtistId = Artist.ArtistId WHERE Artist.Name = 'Led Zeppelin',1,Led Zeppelin has 14 albums in the database.,,
+How many employees quit last year?,unanswerable,Says there is no such data,,0,This database can't answer that: Employee resignations/quit data does not exist in the database.,,
+What is the average rating of our tracks?,unanswerable,Says there is no rating column,,0,This database can't answer that: Track ratings are not stored in the database schema.,,
+How many albums does Led Zep have?,fuzzy name,Finds Led Zeppelin (14 albums) or says the name was not found,"SELECT COUNT(*) 
+FROM Album AS al
+JOIN Artist AS ar ON al.ArtistId = ar.ArtistId
+WHERE ar.Name = 'Led Zeppelin'",1,Led Zeppelin has 14 albums.,,

@@ -91,6 +91,11 @@ def generate_sql(question, schema, bad_sql=None, error=None, data_note=""):
         "choose the most reasonable measure from the schema (total money spent, units "
         "sold) and, when ranking, add the name as a second ORDER BY so ties are stable.\n"
         "4. Relative dates such as 'last year' or 'this month' must NOT use today's "
+        "date. Use the most recent period that exists in the data.\n"
+        "5. If the question uses a singular noun (for example 'the longest track' or "
+        "'which genre has the most'), use LIMIT 1. If it uses a plural (for example "
+        "'tracks', 'customers'), return a ranked list: use the number the user gave, "
+        "otherwise LIMIT 10.\n\n"
         "date. Use the most recent period that exists in the data.\n\n"
         f"Data note: {data_note}\n\n"
         f"Schema:\n{schema}\n\n"
@@ -107,16 +112,19 @@ def generate_sql(question, schema, bad_sql=None, error=None, data_note=""):
 
 def explain(question, columns, rows, sql="", data_note=""):
     """Turn the query result into a short plain-English answer."""
+    uses_dates = any(w in sql.lower() for w in ("date", "strftime", "year"))
     if not rows or all(v is None for r in rows for v in r):
-        return f"No matching data was found for this question. {data_note}".strip()
+        note = f" {data_note}" if uses_dates else ""
+        return f"The query ran, but no matching rows were found.{note}"
     preview = [dict(zip(columns, r)) for r in rows[:20]]
     prompt = (
         "Answer the question in 1 to 3 plain sentences, using ONLY the query result "
-        "below. Do not quote SQL. If the question was vague (for example 'best' or "
-        "'popular'), say in a few words how it was measured, based on the query. If "
-        "several items are tied at the cutoff, mention the tie. If the question used a "
-        "relative date like 'last year', say which actual year was used. If the result "
-        "is a long list, summarise it and name the top items.\n\n"
+        "below. Do not quote SQL. If the question was vague, say in a few words which "
+        "measure the query used, using the question's own wording (for example: "
+        "'Price was measured as the total of the track prices'). If several items are "
+        "tied at the cutoff, mention the tie. If the question used a relative date "
+        "like 'last year', say which actual year was used. If the result is a long "
+        "list, summarise it and name the top items.\n\n"
         f"Data note: {data_note}\n"
         f"Query used: {sql}\n"
         f"Question: {question}\n"
@@ -124,8 +132,6 @@ def explain(question, columns, rows, sql="", data_note=""):
         "Answer:"
     )
     return generate(prompt).strip()
-
-
 def ask(question, db_path=DB_PATH):
     """Question in; SQL, rows and a plain answer out."""
     schema = get_schema(db_path)
