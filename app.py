@@ -112,7 +112,12 @@ with right:
             f'<div style="font-size:1.2rem;font-weight:700">{html.escape(latest["question"])}</div>',
             unsafe_allow_html=True,
         )
-        if latest["error"]:
+        if latest.get("blocked"):
+            st.warning(
+                "I can only answer read-only questions, so I can't change or "
+                "delete data. Try asking something like 'How many customers are there?'"
+            )
+        elif latest["error"]:
             st.error("Sorry, I couldn't answer that. Try rephrasing the question.")
             with st.expander("Details"):
                 st.code(latest["error"])
@@ -142,7 +147,10 @@ with right:
             with st.expander(f"Earlier questions ({len(older)})"):
                 for item in reversed(older):
                     st.markdown(f"**Q:** {item['question']}")
-                    st.markdown((item["answer"] or "No answer.").replace("$", "\\$"))
+                    if item.get("blocked"):
+                        st.markdown("Refused: write requests are not allowed.")
+                    else:
+                        st.markdown((item["answer"] or "No answer.").replace("$", "\\$"))
                     st.divider()
     else:
         with st.container(border=True):
