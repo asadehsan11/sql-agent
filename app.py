@@ -117,6 +117,8 @@ with right:
                 "I can only answer read-only questions, so I can't change or "
                 "delete data. Try asking something like 'How many customers are there?'"
             )
+        elif latest.get("unanswerable"):
+            st.info(latest["answer"])
         elif latest["error"]:
             st.error("Sorry, I couldn't answer that. Try rephrasing the question.")
             with st.expander("Details"):

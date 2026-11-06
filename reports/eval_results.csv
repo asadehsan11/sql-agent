@@ -1,22 +1,27 @@
 question,correct,seconds,generated_sql
-How many tracks are there?,True,3.4,SELECT COUNT(*) FROM Track
-How many customers are there?,True,2.1,SELECT COUNT(*) FROM [Customer]
-Which genre has the most tracks?,True,5.8,SELECT T2.Name FROM Track AS T1 INNER JOIN Genre AS T2 ON T1.GenreId = T2.GenreId GROUP BY T1.GenreId ORDER BY COUNT(*) DESC LIMIT 1
-Which 5 artists have the most albums?,True,9.0,"SELECT T1.Name, COUNT(T2.AlbumId) AS AlbumCount
-FROM Artist AS T1
-JOIN Album AS T2 ON T1.ArtistId = T2.ArtistId
-GROUP BY T1.ArtistId, T1.Name
-ORDER BY AlbumCount DESC
+How many tracks are there?,True,1.7,SELECT COUNT(*) FROM Track
+How many customers are there?,True,2.8,SELECT COUNT(*) FROM Customer
+Which genre has the most tracks?,True,2.2,"SELECT T1.Name 
+FROM Genre AS T1 
+JOIN Track AS T2 ON T1.GenreId = T2.GenreId 
+GROUP BY T1.GenreId, T1.Name 
+ORDER BY COUNT(T2.TrackId) DESC, T1.Name ASC 
+LIMIT 1"
+Which 5 artists have the most albums?,True,1.8,"SELECT Artist.Name, COUNT(Album.AlbumId) AS AlbumCount
+FROM Artist
+JOIN Album ON Artist.ArtistId = Album.ArtistId
+GROUP BY Artist.ArtistId, Artist.Name
+ORDER BY AlbumCount DESC, Artist.Name ASC
 LIMIT 5"
-What is the total sales amount of all invoices?,True,1.4,SELECT SUM(Total) FROM Invoice
-Which country has the highest total sales?,True,4.8,"SELECT BillingCountry
+What is the total sales amount of all invoices?,True,3.9,SELECT SUM(Total) FROM Invoice
+Which country has the highest total sales?,True,1.6,"SELECT BillingCountry AS Country, SUM(Total) AS TotalSales
 FROM Invoice
 GROUP BY BillingCountry
-ORDER BY SUM(Total) DESC
+ORDER BY TotalSales DESC, Country ASC
 LIMIT 1"
-How many invoices were issued in 2010?,True,3.2,"SELECT COUNT(*) 
+How many invoices were issued in 2010?,True,2.3,"SELECT COUNT(*) 
 FROM Invoice 
 WHERE strftime('%Y', InvoiceDate) = '2010'"
-What is the longest track by duration? Give its name.,True,3.1,SELECT [Name] FROM [Track] ORDER BY [Milliseconds] DESC LIMIT 1
-How many employees are there?,True,2.6,SELECT COUNT(*) FROM [Employee]
-How many albums does the artist Led Zeppelin have?,True,6.3,SELECT COUNT(*) FROM Album JOIN Artist ON Album.ArtistId = Artist.ArtistId WHERE Artist.Name = 'Led Zeppelin'
+What is the longest track by duration? Give its name.,True,2.7,"SELECT Name FROM Track ORDER BY Milliseconds DESC, Name ASC LIMIT 1"
+How many employees are there?,True,1.8,SELECT COUNT(*) FROM Employee
+How many albums does the artist Led Zeppelin have?,True,1.5,SELECT count(*) FROM Album AS T1 INNER JOIN Artist AS T2 ON T1.ArtistId = T2.ArtistId WHERE T2.Name = 'Led Zeppelin'
